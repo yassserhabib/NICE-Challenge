@@ -1,0 +1,31 @@
+
+
+I have followed these steps:
+
+Start -> Administrative Tools -> Server Manager Roles -> Active Directory Domain Services -> Active Directory Users and Computers -> ad.daswebs.com -> Users
+
+I right-clicked Users and selected New -> Group, typed “HRsec”, and clicked okay, and group type as security.
+
+I did the same for “Accountingsec”. I moved the HRsec security group I created to the Human Resources folder and the Accountingsec security group to the Accounting folder.
+
+I double-clicked on Accountingsec under Account, clicked on the Members tab, then added Brimlock Stones. I did the same for HRsec with Sergio Chanel.
+
+Then for the rest of challenges:
+
+Start -> Administrative Tools -> Group Policy Management
+
+I added DasGroup then I pressed Edit DasGroup and then I have followed these steps:
+
+Computer Configuration -> Policies -> Administrative Templates -> Windows Components -> Autoplay Policies
+
+From here I enabled the option “Turn off AutoPlay” and selected “CD-ROM and removable media drives” from the drop-down menu.
+
+Then..
+
+Computer Configuration -> Policies -> Windows Settings -> Security Settings -> Security Options
+
+From here I selected “Interactive logon: Do not display last user name” and enabled it.
+
+For the last options, I opened Windows Explorer and went to Network then File share. From here, I did right-click  on the Accounting folder.
+I clicked the Security tab, clicked Continue, clicked Add, typed HRsec, and selected Check Names. Then I clicked okay. After that, I denied Read and Write access.
+I did the same with Human Resources folder and I added Accountingsec and I also denied Read and Write access.
