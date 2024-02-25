@@ -1,0 +1,95 @@
+I have followed these steps:
+
+1.	I opened Active Directory Users and Computers
+2.	I created Accounting OU by following these steps:
+•	Right-click on the domain name in the left pane.
+•	Select "New" > "Organizational Unit".
+•	Name it "Accounting" exactly as specified.
+3.	I created Accounting Security Group by following these steps:
+•	Right-click on the "Accounting" OU.
+•	Select "New" > "Group".
+•	Name it "AccountingSec"
+4.	I created Human Resources OU:
+•	I created a new OU named "Human Resources" under the domain.
+5.	I created Human Resources Security Group:
+•	Right-click on the "Human Resources" OU.
+•	Select "New" > "Group".
+•	Name it "HRsec" as requested.
+
+1.	I added Brimlock to Accounting OU and Security Group:
+•	Find Brimlock's user account in Active Directory Users and Computers.
+•	Right-click on Brimlock's user account.
+•	Select "Move..." and choose the Accounting OU.
+•	Then go to Accounting Security Group.
+•	Double-click on "AccountingSec" to open its properties.
+•	Go to the "Members" tab and click "Add".
+•	Add Brimlock to the Security Group.
+2.	I added Sergio to HR's OU and Security Group:
+•	Find Sergio's user account in Active Directory Users and Computers.
+•	Right-click on Sergio's user account.
+•	Select "Move..." and choose the Human Resources OU.
+•	Then go to the HR Security Group.
+•	Double-click on "HRsec" to open its properties.
+•	Go to the "Members" tab and click "Add".
+•	Add Sergio to the Security Group.
+•  I create GPOs:
+•	Opened Group Policy Management Console (GPMC).
+•	I did Right-click on "Group Policy Objects" and select "New".
+•	I named the first GPO as "HR" and the second one as "Accounting".
+•  Iinked and enforced the GPOs:
+•	I went to the Organizational Unit (OU) where the HR department is located.
+•	Then right-click on the OU and select "Link an Existing GPO".
+•	Choose the "HR" GPO and click "OK".
+•	Then right-click on the linked "HR" GPO and selected "Enforced" to enforce it.
+•	I repeated the same steps for the OU where the Accounting department is located, linking and enforcing the "Accounting" GPO.
+•  I configured GPO settings:
+•	I pressed right-click on the "HR" GPO and select "Edit".
+•	Then to User Configuration -> Preferences -> Windows Settings -> Drive Maps.
+•	Then right-click in the right pane, select "New -> Mapped Drive".
+•	Configured the mapped drive settings:
+o	Action: Update
+o	Location: \\Fileshare\HR
+o	Drive letter: Selected H:
+•	I clicked "OK" to apply the settings.
+•	I repeated the same process for the "Accounting" GPO, I replaced the path and drive letter with the correct values for location: \\Fileshare\Accounting and drive letter: T:
+
+1.	I created Security Groups:
+o	I created two security groups in Active Directory: one for HR and one for Accounting. Add the appropriate users to each group.
+2.	I configured Security Filtering:
+o	In the Group Policy Management Console, I selected the "HR" GPO.
+o	In the details pane, I went to the "Scope" tab.
+o	Under "Security Filtering", I remove the default "Authenticated Users" group.
+o	I clicked "Add" and then add the HR security group you created. Ensure that this group has both Read and Apply Group Policy permissions.
+o	I repeated the same process for the "Accounting" GPO, but this time add the Accounting security group instead.
+
+
+
+
+1.	I accessed Fileshare Server:
+o	I logged in to the Fileshare server where the "HR" and "Accounting" shares are hosted.
+2.	I modify Share Permissions:
+o	I located the folder that represents the "HR" share.
+o	I did right-click on the folder, and select "Properties".
+o	I went to the "Network" tab, and I click on "Advanced Sharing".
+o	Then on "Permissions".
+o	I click "Add", then add the "HRsec" security group.
+o	I assigned appropriate permissions (e.g., Full Control, Modify, Read) to the "HRsec" group.
+o	I clicked "OK" to save the changes.
+o	I repeated the same process for the "Accounting" share, assigning permissions to the "AccountingSec" security group.
+
+I have also followed these steps on Fileshare server:
+Sudo groupadd AccountingSec
+sudo groupadd HRsec
+sudo chown -R :AccountingSec /share/Accounting
+sudo chmod -R 770 /share/Accounting
+sudo chown -R :HRsec /share/HR
+sudo chmod -R 770 /share/HR
+
+Then:
+•	sudo setfacl -m u:Brimlock:rwx /share/Accounting/AccountingForecasts.ods
+•	sudo setfacl -m d:u:Brimlock:rwx /share/Accounting/AccountingForecasts.ods
+•	sudo setfacl -m other:--- /share/Accounting/AccountingForecasts.ods
+
+•	sudo setfacl -m u:Sergio:rwx /share/HR/EmployeePerformanceReviews.txt
+•	sudo setfacl -m d:u:Sergio:rwx /share/HR/EmployeePerformanceReviews.txt
+•	sudo setfacl -m other:--- /share/HR/EmoloyeePerformanceReviews.txt
